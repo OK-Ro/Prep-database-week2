@@ -1,4 +1,4 @@
--- Create Tables
+
 
 -- Recipes Table
 CREATE TABLE Recipes (
@@ -45,7 +45,7 @@ CREATE TABLE Steps (
     FOREIGN KEY (recipe_id) REFERENCES Recipes (recipe_id)
 );
 
--- Insert Data
+
 
 -- Insert Categories
 INSERT INTO Categories (category_id, category_name)
