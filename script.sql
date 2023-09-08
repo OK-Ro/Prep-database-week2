@@ -1,192 +1,96 @@
+// Recipes Collection
+db.Recipes.insertMany([
+    {
+        recipe_id: 1,
+        recipe_name: 'Cake',
+        categories: [1, 2, 3],
+        ingredients: [1, 2, 3, 4, 5],
+        steps: [
+            { step_id: 1, step_number: 1, instruction: 'Beat Cream Cheese' },
+            { step_id: 2, step_number: 2, instruction: 'Add condensed Milk and blend' },
+            { step_id: 3, step_number: 3, instruction: 'Add Lemon Juice and blend' },
+            { step_id: 4, step_number: 4, instruction: 'Add the mix to the pie crust' },
+            { step_id: 5, step_number: 5, instruction: 'Spread the Cherry Jam' },
+            { step_id: 6, step_number: 6, instruction: 'Place in refrigerator for 3h.' }
+        ]
+    },
+    {
+        recipe_id: 2,
+        recipe_name: 'Roasted Brussels Sprouts',
+        categories: [2, 3],
+        ingredients: [6, 7, 8, 9, 10, 11],
+        steps: [
+            { step_id: 7, step_number: 1, instruction: 'Preheat the oven' },
+            { step_id: 8, step_number: 2, instruction: 'Mix the ingredients in a bowl' },
+            { step_id: 9, step_number: 3, instruction: 'Spread the mix on a baking sheet' },
+            { step_id: 10, step_number: 4, instruction: 'Bake for 30 minutes' }
+        ]
+    },
+    {
+        recipe_id: 3,
+        recipe_name: 'Mac & Cheese',
+        categories: [3],
+        ingredients: [12, 13, 14, 15, 16, 17, 18],
+        steps: [
+            { step_id: 11, step_number: 1, instruction: 'Cook Macaroni for 8 minutes' },
+            { step_id: 12, step_number: 2, instruction: 'Melt butter in a saucepan' },
+            { step_id: 13, step_number: 3, instruction: 'Add flour, salt, pepper and mix' },
+            { step_id: 14, step_number: 4, instruction: 'Add Milk and mix' },
+            { step_id: 15, step_number: 5, instruction: 'Cook until mix is smooth' },
+            { step_id: 16, step_number: 6, instruction: 'Add cheddar cheese' },
+            { step_id: 17, step_number: 7, instruction: 'Add the macaroni' }
+        ]
+    },
+    {
+        recipe_id: 4,
+        recipe_name: 'Tamagoyaki Japanese Omelette',
+        categories: [3, 4],
+        ingredients: [19, 20, 21, 22, 23],
+        steps: [
+            { step_id: 18, step_number: 1, instruction: 'Beat the eggs' },
+            { step_id: 19, step_number: 2, instruction: 'Add soy sauce, sugar and salt' },
+            { step_id: 20, step_number: 3, instruction: 'Add oil to a saucepan' },
+            { step_id: 21, step_number: 4, instruction: 'Bring to medium heat' },
+            { step_id: 22, step_number: 5, instruction: 'Add some mix to the saucepan' },
+            { step_id: 23, step_number: 6, instruction: 'Let it cook for 1 minute' },
+            { step_id: 24, step_number: 7, instruction: 'Add oil to a saucepan' },
+            { step_id: 25, step_number: 8, instruction: 'Add some mix to the saucepan' },
+            { step_id: 26, step_number: 9, instruction: 'Let it cook for 1 minute' },
+            { step_id: 27, step_number: 10, instruction: 'Remove pan from fire' }
+        ]
+    }
+]);
 
+// Categories Collection
+db.Categories.insertMany([
+    { category_id: 1, category_name: 'Cake' },
+    { category_id: 2, category_name: 'No-Bake' },
+    { category_id: 3, category_name: 'Vegetarian' }
+]);
 
--- Recipes Table
-CREATE TABLE Recipes (
-    recipe_id INT PRIMARY KEY,
-    recipe_name VARCHAR(255)
-);
-
--- Categories Table
-CREATE TABLE Categories (
-    category_id INT PRIMARY KEY,
-    category_name VARCHAR(100)
-);
-
--- RecipeCategories Table (Many-to-Many Relationship)
-CREATE TABLE RecipeCategories (
-    recipe_id INT,
-    category_id INT,
-    PRIMARY KEY (recipe_id, category_id),
-    FOREIGN KEY (recipe_id) REFERENCES Recipes (recipe_id),
-    FOREIGN KEY (category_id) REFERENCES Categories (category_id)
-);
-
--- Ingredients Table
-CREATE TABLE Ingredients (
-    ingredient_id INT PRIMARY KEY,
-    ingredient_name VARCHAR(255)
-);
-
--- RecipeIngredients Table (Many-to-Many Relationship)
-CREATE TABLE RecipeIngredients (
-    recipe_id INT,
-    ingredient_id INT,
-    PRIMARY KEY (recipe_id, ingredient_id),
-    FOREIGN KEY (recipe_id) REFERENCES Recipes (recipe_id),
-    FOREIGN KEY (ingredient_id) REFERENCES Ingredients (ingredient_id)
-);
-
--- Steps Table
-CREATE TABLE Steps (
-    step_id INT PRIMARY KEY,
-    recipe_id INT,
-    step_number INT,
-    instruction TEXT,
-    FOREIGN KEY (recipe_id) REFERENCES Recipes (recipe_id)
-);
-
-
-
--- Insert Categories
-INSERT INTO Categories (category_id, category_name)
-VALUES
-    (1, 'Cake'),
-    (2, 'No-Bake'),
-    (3, 'Vegetarian');
-
--- Insert Ingredients
-INSERT INTO Ingredients (ingredient_id, ingredient_name)
-VALUES
-    (1, 'Condensed milk'),
-    (2, 'Cream Cheese'),
-    (3, 'Lemon Juice'),
-    (4, 'Pie Crust'),
-    (5, 'Cherry Jam');
-
--- Insert Steps for Recipe "Cake"
-INSERT INTO Steps (step_id, recipe_id, step_number, instruction)
-VALUES
-    (1, 1, 1, 'Beat Cream Cheese'),
-    (2, 1, 2, 'Add condensed Milk and blend'),
-    (3, 1, 3, 'Add Lemon Juice and blend'),
-    (4, 1, 4, 'Add the mix to the pie crust'),
-    (5, 1, 5, 'Spread the Cherry Jam'),
-    (6, 1, 6, 'Place in refrigerator for 3h.');
-
--- Insert Recipe "Roasted Brussels Sprouts"
-INSERT INTO Recipes (recipe_id, recipe_name)
-VALUES (2, 'Roasted Brussels Sprouts');
-
--- Associate Recipe with Categories
-INSERT INTO RecipeCategories (recipe_id, category_id)
-VALUES (2, 2), (2, 3); -- Vegan and Gluten-Free categories
-
--- Insert Ingredients for Recipe "Roasted Brussels Sprouts"
-INSERT INTO RecipeIngredients (recipe_id, ingredient_id)
-VALUES
-    (2, 6),   -- Brussels Sprouts
-    (2, 7),   -- Lemon juice
-    (2, 8),   -- Sesame seeds
-    (2, 9),   -- Pepper
-    (2, 10),  -- Salt
-    (2, 11);  -- Olive oil
-
--- Insert Steps for Recipe "Roasted Brussels Sprouts"
-INSERT INTO Steps (step_id, recipe_id, step_number, instruction)
-VALUES
-    (7, 2, 1, 'Preheat the oven'),
-    (8, 2, 2, 'Mix the ingredients in a bowl'),
-    (9, 2, 3, 'Spread the mix on a baking sheet'),
-    (10, 2, 4, 'Bake for 30 minutes');
-
--- Insert Recipe "Mac & Cheese"
-INSERT INTO Recipes (recipe_id, recipe_name)
-VALUES (3, 'Mac & Cheese');
-
--- Associate Recipe with Categories
-INSERT INTO RecipeCategories (recipe_id, category_id)
-VALUES (3, 3); -- Vegetarian category
-
--- Insert Ingredients for Recipe "Mac & Cheese"
-INSERT INTO RecipeIngredients (recipe_id, ingredient_id)
-VALUES
-    (3, 12),  -- Macaroni
-    (3, 13),  -- Butter
-    (3, 14),  -- Flour
-    (3, 15),  -- Salt
-    (3, 16),  -- Pepper
-    (3, 17),  -- Milk
-    (3, 18);  -- Shredded Cheddar cheese
-
--- Insert Steps for Recipe "Mac & Cheese"
-INSERT INTO Steps (step_id, recipe_id, step_number, instruction)
-VALUES
-    (11, 3, 1, 'Cook Macaroni for 8 minutes'),
-    (12, 3, 2, 'Melt butter in a saucepan'),
-    (13, 3, 3, 'Add flour, salt, pepper and mix'),
-    (14, 3, 4, 'Add Milk and mix'),
-    (15, 3, 5, 'Cook until mix is smooth'),
-    (16, 3, 6, 'Add cheddar cheese'),
-    (17, 3, 7, 'Add the macaroni');
-
--- Insert Recipe "Tamagoyaki Japanese Omelette"
-INSERT INTO Recipes (recipe_id, recipe_name)
-VALUES (4, 'Tamagoyaki Japanese Omelette');
-
--- Associate Recipe with Categories
-INSERT INTO RecipeCategories (recipe_id, category_id)
-VALUES (4, 3), (4, 4); -- Vegetarian and Japanese categories
-
--- Insert Ingredients for Recipe "Tamagoyaki Japanese Omelette"
-INSERT INTO RecipeIngredients (recipe_id, ingredient_id)
-VALUES
-    (4, 19),  -- Eggs
-    (4, 20),  -- Soy sauce
-    (4, 21),  -- Sugar
-    (4, 22),  -- Salt
-    (4, 23);  -- Olive Oil
-
--- Insert Steps for Recipe "Tamagoyaki Japanese Omelette"
-INSERT INTO Steps (step_id, recipe_id, step_number, instruction)
-VALUES
-    (18, 4, 1, 'Beat the eggs'),
-    (19, 4, 2, 'Add soy sauce, sugar and salt'),
-    (20, 4, 3, 'Add oil to a saucepan'),
-    (21, 4, 4, 'Bring to medium heat'),
-    (22, 4, 5, 'Add some mix to the saucepan'),
-    (23, 4, 6, 'Let it cook for 1 minute'),
-    (24, 4, 7, 'Add oil to a saucepan'),
-    (25, 4, 8, 'Add some mix to the saucepan'),
-    (26, 4, 9, 'Let it cook for 1 minute'),
-    (27, 4, 10, 'Remove pan from fire');
-
-
--- All the vegetarian recipes with potatoes
-SELECT Recipes.category_id, Recipes.category_name, Recipes.ingredient_name
-FROM Recipes
-JOIN RecipeCategories ON Recipes.recipe_id = RecipeCategories.recipe_id
-JOIN Categories ON RecipeCategories.category_id = Categories.category_id
-JOIN RecipeIngredients ON Recipes.recipe_id = RecipeIngredients.recipe_id
-JOIN Ingredients ON RecipeIngredients.ingredient_id = Ingredients.ingredient_id
-WHERE Categories.category_name = 'Vegetarian'
-AND Ingredients.ingredient_name LIKE '%Potato%';
-
--- All the cakes that do not need baking
-SELECT *
-FROM Recipes
-JOIN RecipeCategories ON Recipes.recipe_id = RecipeCategories.recipe_id
-JOIN Categories ON RecipeCategories.category_id = Categories.category_id
-WHERE category_name = 'Cake'
-AND NOT EXISTS (
-    SELECT 1
-    FROM Steps
-    WHERE Recipes.recipe_id = Steps.recipe_id
-      AND instruction LIKE '%bake%'
-);
-
--- All the vegan and Japanese recipes
-SELECT *
-FROM Recipes
-JOIN RecipeCategories ON Recipes.recipe_id = RecipeCategories.recipe_id
-JOIN Categories ON RecipeCategories.category_id = Categories.category_id
-WHERE category_name IN ('Vegan', 'Japanese');
+// Ingredients Collection
+db.Ingredients.insertMany([
+    { ingredient_id: 1, ingredient_name: 'Condensed milk' },
+    { ingredient_id: 2, ingredient_name: 'Cream Cheese' },
+    { ingredient_id: 3, ingredient_name: 'Lemon Juice' },
+    { ingredient_id: 4, ingredient_name: 'Pie Crust' },
+    { ingredient_id: 5, ingredient_name: 'Cherry Jam' },
+    { ingredient_id: 6, ingredient_name: 'Brussels Sprouts' },
+    { ingredient_id: 7, ingredient_name: 'Lemon juice' },
+    { ingredient_id: 8, ingredient_name: 'Sesame seeds' },
+    { ingredient_id: 9, ingredient_name: 'Pepper' },
+    { ingredient_id: 10, ingredient_name: 'Salt' },
+    { ingredient_id: 11, ingredient_name: 'Olive oil' },
+    { ingredient_id: 12, ingredient_name: 'Macaroni' },
+    { ingredient_id: 13, ingredient_name: 'Butter' },
+    { ingredient_id: 14, ingredient_name: 'Flour' },
+    { ingredient_id: 15, ingredient_name: 'Salt' },
+    { ingredient_id: 16, ingredient_name: 'Pepper' },
+    { ingredient_id: 17, ingredient_name: 'Milk' },
+    { ingredient_id: 18, ingredient_name: 'Shredded Cheddar cheese' },
+    { ingredient_id: 19, ingredient_name: 'Eggs' },
+    { ingredient_id: 20, ingredient_name: 'Soy sauce' },
+    { ingredient_id: 21, ingredient_name: 'Sugar' },
+    { ingredient_id: 22, ingredient_name: 'Salt' },
+    { ingredient_id: 23, ingredient_name: 'Olive Oil' }
+]);
